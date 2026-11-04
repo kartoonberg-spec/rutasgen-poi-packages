@@ -1,0 +1,377 @@
+{
+  "fr": [
+    "europe/france",
+    "France (extracto Geofabrik)",
+    "FR"
+  ],
+  "it": [
+    "europe/italy",
+    "Italia (extracto Geofabrik)",
+    "IT"
+  ],
+  "albania": [
+    "europe/albania",
+    "Albania",
+    "AL"
+  ],
+  "andorra": [
+    "europe/andorra",
+    "Andorra",
+    "AD"
+  ],
+  "austria": [
+    "europe/austria",
+    "Austria",
+    "AT"
+  ],
+  "belarus": [
+    "europe/belarus",
+    "Belarus",
+    "BY"
+  ],
+  "belgium": [
+    "europe/belgium",
+    "Belgium",
+    "BE"
+  ],
+  "bosnia-herzegovina": [
+    "europe/bosnia-herzegovina",
+    "Bosnia-Herzegovina",
+    "BA"
+  ],
+  "bulgaria": [
+    "europe/bulgaria",
+    "Bulgaria",
+    "BG"
+  ],
+  "croatia": [
+    "europe/croatia",
+    "Croatia",
+    "HR"
+  ],
+  "cyprus": [
+    "europe/cyprus",
+    "Cyprus",
+    "CY"
+  ],
+  "czech-republic": [
+    "europe/czech-republic",
+    "Czech Republic",
+    "CZ"
+  ],
+  "denmark": [
+    "europe/denmark",
+    "Denmark",
+    "DK"
+  ],
+  "estonia": [
+    "europe/estonia",
+    "Estonia",
+    "EE"
+  ],
+  "faroe-islands": [
+    "europe/faroe-islands",
+    "Faroe Islands",
+    "FO"
+  ],
+  "finland": [
+    "europe/finland",
+    "Finland",
+    "FI"
+  ],
+  "georgia": [
+    "europe/georgia",
+    "Georgia",
+    "GE"
+  ],
+  "greece": [
+    "europe/greece",
+    "Greece",
+    "GR"
+  ],
+  "hungary": [
+    "europe/hungary",
+    "Hungary",
+    "HU"
+  ],
+  "iceland": [
+    "europe/iceland",
+    "Iceland",
+    "IS"
+  ],
+  "ireland-and-northern-ireland": [
+    "europe/ireland-and-northern-ireland",
+    "Ireland and Northern Ireland",
+    "IE"
+  ],
+  "latvia": [
+    "europe/latvia",
+    "Latvia",
+    "LV"
+  ],
+  "liechtenstein": [
+    "europe/liechtenstein",
+    "Liechtenstein",
+    "LI"
+  ],
+  "lithuania": [
+    "europe/lithuania",
+    "Lithuania",
+    "LT"
+  ],
+  "luxembourg": [
+    "europe/luxembourg",
+    "Luxembourg",
+    "LU"
+  ],
+  "macedonia": [
+    "europe/macedonia",
+    "Macedonia",
+    "MK"
+  ],
+  "malta": [
+    "europe/malta",
+    "Malta",
+    "MT"
+  ],
+  "moldova": [
+    "europe/moldova",
+    "Moldova",
+    "MD"
+  ],
+  "monaco": [
+    "europe/monaco",
+    "Monaco",
+    "MC"
+  ],
+  "montenegro": [
+    "europe/montenegro",
+    "Montenegro",
+    "ME"
+  ],
+  "netherlands": [
+    "europe/netherlands",
+    "Netherlands",
+    "NL"
+  ],
+  "norway": [
+    "europe/norway",
+    "Norway",
+    "NO"
+  ],
+  "poland": [
+    "europe/poland",
+    "Poland",
+    "PL"
+  ],
+  "portugal": [
+    "europe/portugal",
+    "Portugal",
+    "PT"
+  ],
+  "romania": [
+    "europe/romania",
+    "Romania",
+    "RO"
+  ],
+  "serbia": [
+    "europe/serbia",
+    "Serbia",
+    "RS"
+  ],
+  "slovakia": [
+    "europe/slovakia",
+    "Slovakia",
+    "SK"
+  ],
+  "slovenia": [
+    "europe/slovenia",
+    "Slovenia",
+    "SI"
+  ],
+  "spain": [
+    "europe/spain",
+    "Spain",
+    "ES"
+  ],
+  "sweden": [
+    "europe/sweden",
+    "Sweden",
+    "SE"
+  ],
+  "switzerland": [
+    "europe/switzerland",
+    "Switzerland",
+    "CH"
+  ],
+  "turkey": [
+    "europe/turkey",
+    "Turkey",
+    "TR"
+  ],
+  "ukraine": [
+    "europe/ukraine",
+    "Ukraine (with Crimea)",
+    "UA"
+  ],
+  "baden-wuerttemberg": [
+    "europe/germany/baden-wuerttemberg",
+    "Alemania · Baden-Württemberg",
+    "DE"
+  ],
+  "bayern": [
+    "europe/germany/bayern",
+    "Alemania · Bayern",
+    "DE"
+  ],
+  "berlin": [
+    "europe/germany/berlin",
+    "Alemania · Berlin",
+    "DE"
+  ],
+  "brandenburg": [
+    "europe/germany/brandenburg",
+    "Alemania · Brandenburg (mit Berlin)",
+    "DE"
+  ],
+  "bremen": [
+    "europe/germany/bremen",
+    "Alemania · Bremen",
+    "DE"
+  ],
+  "hamburg": [
+    "europe/germany/hamburg",
+    "Alemania · Hamburg",
+    "DE"
+  ],
+  "hessen": [
+    "europe/germany/hessen",
+    "Alemania · Hessen",
+    "DE"
+  ],
+  "mecklenburg-vorpommern": [
+    "europe/germany/mecklenburg-vorpommern",
+    "Alemania · Mecklenburg-Vorpommern",
+    "DE"
+  ],
+  "niedersachsen": [
+    "europe/germany/niedersachsen",
+    "Alemania · Niedersachsen (mit Bremen)",
+    "DE"
+  ],
+  "nordrhein-westfalen": [
+    "europe/germany/nordrhein-westfalen",
+    "Alemania · Nordrhein-Westfalen",
+    "DE"
+  ],
+  "rheinland-pfalz": [
+    "europe/germany/rheinland-pfalz",
+    "Alemania · Rheinland-Pfalz",
+    "DE"
+  ],
+  "saarland": [
+    "europe/germany/saarland",
+    "Alemania · Saarland",
+    "DE"
+  ],
+  "sachsen": [
+    "europe/germany/sachsen",
+    "Alemania · Sachsen",
+    "DE"
+  ],
+  "sachsen-anhalt": [
+    "europe/germany/sachsen-anhalt",
+    "Alemania · Sachsen-Anhalt",
+    "DE"
+  ],
+  "schleswig-holstein": [
+    "europe/germany/schleswig-holstein",
+    "Alemania · Schleswig-Holstein",
+    "DE"
+  ],
+  "thueringen": [
+    "europe/germany/thueringen",
+    "Alemania · Thüringen",
+    "DE"
+  ],
+  "england": [
+    "europe/united-kingdom/england",
+    "Reino Unido · England",
+    "GB"
+  ],
+  "scotland": [
+    "europe/united-kingdom/scotland",
+    "Reino Unido · Scotland",
+    "GB"
+  ],
+  "wales": [
+    "europe/united-kingdom/wales",
+    "Reino Unido · Wales",
+    "GB"
+  ],
+  "central-fed-district": [
+    "russia/central-fed-district",
+    "Rusia · Central Federal District",
+    "RU"
+  ],
+  "northwestern-fed-district": [
+    "russia/northwestern-fed-district",
+    "Rusia · Northwestern Federal District",
+    "RU"
+  ],
+  "south-fed-district": [
+    "russia/south-fed-district",
+    "Rusia · South Federal District",
+    "RU"
+  ],
+  "north-caucasus-fed-district": [
+    "russia/north-caucasus-fed-district",
+    "Rusia · North Caucasus Federal District",
+    "RU"
+  ],
+  "volga-fed-district": [
+    "russia/volga-fed-district",
+    "Rusia · Volga Federal District",
+    "RU"
+  ],
+  "kaliningrad": [
+    "russia/kaliningrad",
+    "Rusia · Kaliningrad",
+    "RU"
+  ],
+  "kosovo": [
+    "europe/kosovo",
+    "Kosovo",
+    "XK"
+  ],
+  "isle-of-man": [
+    "europe/isle-of-man",
+    "Isle of Man",
+    "IM"
+  ],
+  "guernsey-jersey": [
+    "europe/guernsey-jersey",
+    "Guernsey and Jersey",
+    "GG"
+  ],
+  "azores": [
+    "europe/azores",
+    "Azores",
+    "PT"
+  ],
+  "canary-islands": [
+    "africa/canary-islands",
+    "Canary Islands",
+    "ES"
+  ],
+  "armenia": [
+    "asia/armenia",
+    "Armenia",
+    "AM"
+  ],
+  "azerbaijan": [
+    "asia/azerbaijan",
+    "Azerbaijan",
+    "AZ"
+  ]
+}

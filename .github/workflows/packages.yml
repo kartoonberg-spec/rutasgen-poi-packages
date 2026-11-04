@@ -1,4 +1,4 @@
-name: Preparar POI Francia e Italia
+name: Preparar POI Europa
 on:
   workflow_dispatch:
   push:
@@ -10,7 +10,28 @@ concurrency:
   group: poi-package-publication
   cancel-in-progress: false
 jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tools -p 'test_*.py' -v
+      - id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python tools/europe_catalog.py plan
   build:
+    needs: plan
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     permissions:
@@ -21,23 +42,52 @@ jobs:
         with:
           python-version: '3.12'
       - name: Herramientas de generación
+        if: matrix.region != 'none'
         run: |
           sudo apt-get update
           sudo apt-get install -y osmium-tool
           python -m pip install -r requirements.txt
-      - name: Pruebas de geometrías, ciclos y paquetes
-        run: python -m unittest discover -s tools -p 'test_*.py' -v
-      - name: Generar y verificar ambos países
+      - name: Generar y verificar región
+        if: matrix.region != 'none'
         env:
+          PACKAGE_REGION: ${{ matrix.region }}
           PACKAGE_REPOSITORY: ${{ github.repository }}
-          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}
-        run: python tools/publish_packages.py --repository "$PACKAGE_REPOSITORY" --tag "$PACKAGE_TAG"
-      - name: Publicar primero como borrador
+          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.region }}
+        run: python -u tools/publish_packages.py --repository "$PACKAGE_REPOSITORY" --tag "$PACKAGE_TAG" --region "$PACKAGE_REGION"
+      - name: Publicar archivos verificados sin cambiar el catálogo activo
+        if: matrix.region != 'none'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}
+          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.region }}
           PACKAGE_COMMIT: ${{ github.sha }}
         run: |
-          gh release create "$PACKAGE_TAG" dist/* --draft --target "$PACKAGE_COMMIT" --title "POI Francia e Italia · $PACKAGE_TAG" --notes-file RELEASE_NOTES.md
+          gh release create "$PACKAGE_TAG" dist/* --draft --target "$PACKAGE_COMMIT" --title "POI · $PACKAGE_TAG" --notes-file RELEASE_NOTES.md
+          gh release edit "$PACKAGE_TAG" --draft=false --latest=false
+  publish:
+    needs: [plan, build]
+    if: ${{ always() && !cancelled() && needs.plan.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fusionar solo paquetes publicados y conservar el catálogo anterior
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PACKAGE_PREFIX: poi-${{ github.run_id }}-${{ github.run_attempt }}-
+        run: python tools/europe_catalog.py merge --prefix "$PACKAGE_PREFIX"
+      - name: Publicar catálogo compatible con OFFLINE-01
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PACKAGE_TAG: catalog-${{ github.run_id }}-${{ github.run_attempt }}
+          PACKAGE_COMMIT: ${{ github.sha }}
+        run: |
+          gh release create "$PACKAGE_TAG" combined/* --draft --target "$PACKAGE_COMMIT" --title "Catálogo europeo de POI" --notes-file RELEASE_NOTES.md
           gh release edit "$PACKAGE_TAG" --draft=false --latest

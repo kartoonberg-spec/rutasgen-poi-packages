@@ -16,10 +16,7 @@ from offline_package_metadata import read_poly
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / 'catalog/OsmHikingCatalog.kt'
-REGIONS = {
-    'fr': ('europe/france', 'France (extracto Geofabrik)', 'FR'),
-    'it': ('europe/italy', 'Italia (extracto Geofabrik)', 'IT'),
-}
+REGIONS = json.loads((ROOT / 'catalog/regions.json').read_text(encoding='utf-8'))
 MAX_PACKAGE = 1024 ** 3
 
 def digest(path):
@@ -32,7 +29,12 @@ def download(url, destination):
         request = urllib.request.Request(url, headers={'User-Agent': 'RutasGen-package-builder/1.0'})
         with urllib.request.urlopen(request, timeout=120) as response, partial.open('wb') as output:
             expected = response.headers.get('Content-Length')
-            shutil.copyfileobj(response, output, 1024 * 1024)
+            total = 0
+            while chunk := response.read(1024 * 1024):
+                output.write(chunk)
+                total += len(chunk)
+                if total % (64 * 1024 * 1024) == 0:
+                    print(f'Descargando {destination.name}: {total // (1024*1024)} MiB', flush=True)
         if expected is not None and partial.stat().st_size != int(expected):
             raise ValueError('Descarga incompleta: ' + url)
         partial.replace(destination)
@@ -73,6 +75,7 @@ def entry_for(path, repository, tag):
 
 def build_region(region, out):
     extract, name, country = REGIONS[region]
+    print(f"INICIO {region}: {name}", flush=True)
     with tempfile.TemporaryDirectory(prefix='rutasgen-extract-') as folder:
         folder = Path(folder)
         source = folder / 'source.osm.pbf'
@@ -89,11 +92,13 @@ def build_region(region, out):
         expressions = sorted({f'nwr/{key}={value}' for tags, _ in selectors_from_catalog(CATALOG)
                               for key, value in tags.items()})
         filtered = folder / 'selected.osm.pbf'
+        print(f"{region}: filtrando geometrías", flush=True)
         subprocess.run(['osmium', 'tags-filter', str(source), *expressions,
                         '-o', str(filtered),
                         '--output-header=osmosis_replication_timestamp=' + snapshot], check=True)
         source.unlink()  # Free raw extract space before building the dependency cache.
         destination = out / f'{region}-poi.sqlite'
+        print(f"{region}: construyendo SQLite y resolviendo relaciones", flush=True)
         result = build(filtered, destination, CATALOG, coverage=read_poly(boundary),
                        package_id=region + '-geofabrik', name=name, country=country)
         print(json.dumps({'region': region, **result}), flush=True)
@@ -103,11 +108,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repository', required=True)
     parser.add_argument('--tag', required=True)
+    parser.add_argument('--region', choices=sorted(REGIONS), required=True)
     parser.add_argument('--output', type=Path, default=ROOT / 'dist')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     entries = [entry_for(build_region(region, args.output), args.repository, args.tag)
-               for region in REGIONS]
+               for region in [args.region]]
     catalog = {'schema': 'rutasgen-poi-catalog-v1',
                'generatedAt': datetime.now(timezone.utc).isoformat(), 'packages': entries}
     (args.output / 'catalog-v1.json').write_text(json.dumps(catalog, ensure_ascii=False), encoding='utf-8')
