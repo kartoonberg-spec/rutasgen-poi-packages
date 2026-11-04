@@ -1,0 +1,43 @@
+name: Preparar POI Francia e Italia
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['tools/**', 'catalog/**', 'requirements.txt', '.github/workflows/packages.yml']
+permissions:
+  contents: read
+concurrency:
+  group: poi-package-publication
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Herramientas de generación
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y osmium-tool
+          python -m pip install -r requirements.txt
+      - name: Pruebas de geometrías, ciclos y paquetes
+        run: python -m unittest discover -s tools -p 'test_*.py' -v
+      - name: Generar y verificar ambos países
+        env:
+          PACKAGE_REPOSITORY: ${{ github.repository }}
+          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}
+        run: python tools/publish_packages.py --repository "$PACKAGE_REPOSITORY" --tag "$PACKAGE_TAG"
+      - name: Publicar primero como borrador
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PACKAGE_TAG: poi-${{ github.run_id }}-${{ github.run_attempt }}
+          PACKAGE_COMMIT: ${{ github.sha }}
+        run: |
+          gh release create "$PACKAGE_TAG" dist/* --draft --target "$PACKAGE_COMMIT" --title "POI Francia e Italia · $PACKAGE_TAG" --notes-file RELEASE_NOTES.md
+          gh release edit "$PACKAGE_TAG" --draft=false --latest

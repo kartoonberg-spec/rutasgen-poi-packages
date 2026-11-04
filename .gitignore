@@ -1,0 +1,7 @@
+dist/
+__pycache__/
+*.pyc
+*.part
+*.sqlite
+*.osm.pbf
+.venv/
